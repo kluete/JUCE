@@ -105,7 +105,9 @@ public:
         but remember there's no guarantees what you'll get back.
     */
     virtual void* getNativeHandle() const = 0;
-
+    
+    virtual void restoreParentFocus(void) {}		// [PL]
+    
     /** Shows or hides the window. */
     virtual void setVisible (bool shouldBeVisible) = 0;
 

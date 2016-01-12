@@ -1897,6 +1897,31 @@ public:
             isActiveApplication = true;
         }
     }
+    
+    bool IsParentFocused(void) const
+    {
+	int revert = 0;
+        Window focusedWindow = 0;
+        ScopedXLock xlock;
+        XGetInputFocus (display, &focusedWindow, &revert);
+	
+	return focusedWindow == parentWindow;
+    }
+    
+    void restoreParentFocus(void) override		// [PL]
+    {
+        XWindowAttributes atts;
+        ScopedXLock xlock;
+	
+	if (parentWindow != 0
+            && XGetWindowAttributes (display, parentWindow, &atts)
+            && atts.map_state == IsViewable
+            && ! IsParentFocused())
+        {
+            XSetInputFocus (display, parentWindow, RevertToParent, (::Time) getUserTime());
+            isActiveApplication = false;
+        }
+    }
 
     void textInputRequired (Point<int>, TextInputTarget&) override {}
 
