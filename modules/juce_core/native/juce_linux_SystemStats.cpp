@@ -202,7 +202,7 @@ bool Time::setSystemTimeToThisTime() const
 
 JUCE_API bool JUCE_CALLTYPE juce_isRunningUnderDebugger() noexcept
 {
-   #if JUCE_BSD
+   #if JUCE_BSD || 1		// [PL]
     return false;
    #else
     return LinuxStatsHelpers::getConfigFileValue ("/proc/self/status", "TracerPid")
